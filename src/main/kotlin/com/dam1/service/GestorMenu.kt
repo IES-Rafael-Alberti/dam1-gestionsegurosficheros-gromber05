@@ -3,7 +3,9 @@ package com.dam1.service
 import com.dam1.model.Perfil
 import com.dam1.ui.Output
 
-class GestorMenu(val ui: Output) {
+class GestorMenu(
+    private val ui: Output
+) {
 
     fun menu(usuario: Perfil) {
         when (usuario) {

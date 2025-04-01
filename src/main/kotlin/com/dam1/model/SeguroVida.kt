@@ -1,23 +1,32 @@
 package com.dam1.model
 
-class SeguroVida(
-    numPoliza: String,
-    dniTitular: String,
-    importe: Double,
-    val fechaNac: String,
-    val nivelRiesgo: String,
+import java.time.LocalDate
+
+class SeguroVida: Seguro {
+
+    val fechaNac: LocalDate
+    val nivelRiesgo: Riesgo
     val indemnizacion: Double
-): Seguro(numPoliza, dniTitular, importe) {
+
+    constructor(
+        numPoliza: Int,
+        dniTitular: String,
+        importe: Double,
+        fechaNac: LocalDate,
+        nivelRiesgo: Riesgo,
+        indemnizacion: Double
+    ) : super(numPoliza, dniTitular, importe) {
+        this.nivelRiesgo = nivelRiesgo
+        this.fechaNac = fechaNac
+        this.indemnizacion = indemnizacion
+    }
+
 
     override fun calcularImporteAnioSiguiente(interes: Double): Double {
         return super.calcularImporteAnioSiguiente(interes)
     }
 
-    override fun tipoSeguro(): String {
-        TODO("Not yet implemented")
-    }
-
     override fun serializar(separador: String): String {
-        return "$numPoliza$separador$dniTitular$separador$fechaNac$separador$nivelRiesgo$separador$indemnizacion"
+        return "${super.serializar(separador)}$separador$fechaNac$separador$nivelRiesgo$separador$indemnizacion"
     }
 }

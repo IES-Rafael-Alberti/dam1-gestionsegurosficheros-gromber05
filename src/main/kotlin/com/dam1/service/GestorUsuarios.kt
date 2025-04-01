@@ -1,4 +1,8 @@
 package com.dam1.service
 
-class GestorUsuarios {
+import com.dam1.data.IRepoUsuarios
+
+class GestorUsuarios(
+    private val repo: IRepoUsuarios
+) {
 }

@@ -1,11 +1,13 @@
 package com.dam1.model
 
-import com.dam1.ui.Consola
 import com.dam1.ui.Errores
 import com.dam1.utils.utils
 
-class Usuario(var nombre: String, clave: String, var perfil: String): IExportable {
-    val consola = Consola()
+class Usuario(
+    var nombre: String,
+    clave: String,
+    var perfil: Perfil
+): IExportable {
 
     var clave: String = clave
         private set
@@ -15,7 +17,7 @@ class Usuario(var nombre: String, clave: String, var perfil: String): IExportabl
 
         fun crearUsuario(datos: List<String>): Usuario {
             listaNombres.plus(datos[0])
-            return Usuario(datos[0], datos[1], datos[2])
+            return Usuario(datos[0], datos[1], Perfil.getPerfil(datos[2]))
         }
     }
 
@@ -23,18 +25,25 @@ class Usuario(var nombre: String, clave: String, var perfil: String): IExportabl
         require(nombre !in listaNombres)
     }
 
-    fun cambiarClave() {
-        val antiguaClave = utils.pedirDatos("Introduzca la antigua contraseña »» ")
-
-        if (antiguaClave == this.clave) {
-            this.clave = utils.pedirDatos("Introduzca la nueva contraseña »» ")
-        }
-        else {
-            consola.mostrarError(Errores.contraseniaEquivocada)
-        }
+    fun cambiarClave(nuevaClave: String) {
+        val antiguaClave = nuevaClave
     }
 
     override fun serializar(separador: String): String {
         return "$nombre$separador$clave$separador$perfil"
+    }
+
+    override fun hashCode(): Int {
+        return nombre.hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this == other) return true
+        if (other !is Usuario) return false
+        return this.nombre == other.nombre
+    }
+
+    override fun toString(): String {
+        return "Usuario(nombre= $nombre, clave = $clave, perfil = $perfil)"
     }
 }
