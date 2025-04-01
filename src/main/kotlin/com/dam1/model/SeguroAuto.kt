@@ -1,5 +1,7 @@
 package com.dam1.model
 
+import com.dam1.ui.Output
+
 class SeguroAuto(
     numPoliza: String,
     dniTitular: String,
@@ -10,7 +12,12 @@ class SeguroAuto(
     val tipoCobertura: String,
     var asistenciaCarretera: Boolean,
     val numPartes: Int,
+    consola: Output
 ): Seguro(numPoliza, dniTitular, importe) {
+
+    companion object {
+        val numPolizasAuto: Int = 400000
+    }
 
     override fun calcularImporteAnioSiguiente(interes: Double): Double {
         return super.calcularImporteAnioSiguiente(interes)
@@ -21,6 +28,6 @@ class SeguroAuto(
     }
 
     override fun serializar(separador: String): String {
-        TODO("Not yet implemented")
+        return "$numPoliza$separador$dniTitular$separador$descripcion$separador$combustible$separador$tipoAuto$separador$tipoCobertura$separador$asistenciaCarretera$separador$numPartes"
     }
 }

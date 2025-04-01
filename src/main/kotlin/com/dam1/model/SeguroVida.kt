@@ -18,6 +18,6 @@ class SeguroVida(
     }
 
     override fun serializar(separador: String): String {
-        TODO("Not yet implemented")
+        return "$numPoliza$separador$dniTitular$separador$fechaNac$separador$nivelRiesgo$separador$indemnizacion"
     }
 }

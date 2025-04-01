@@ -1,11 +1,20 @@
 package com.dam1.model
 
-abstract class Seguro(val numPoliza: String, val dniTitular: String, private val importe: Double): IExportable {
+import com.dam1.ui.Consola
+import com.dam1.ui.Output
+
+abstract class Seguro(
+    val numPoliza: String,
+    val dniTitular: String,
+    private val importe: Double,
+): IExportable {
 
     companion object {
         fun validarDni(dni: String): Boolean {
             return dni.matches(Regex("^[0-9]{8}[A-Z]$"))
         }
+
+        val consola: Output = Consola()
     }
 
     open fun calcularImporteAnioSiguiente(interes: Double): Double {
