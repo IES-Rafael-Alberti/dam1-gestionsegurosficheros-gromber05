@@ -1,11 +1,11 @@
 package com.dam1.utils
 
 import com.dam1.ui.Consola
-import com.dam1.ui.Output
+import com.dam1.ui.IEntradaSalida
 
-object utils {
+object Utils {
 
-    private val consola: Output = Consola()
+    private val consola: IEntradaSalida = Consola()
 
     fun pedirDatos(valor: String): String {
         var opcion: String? = null

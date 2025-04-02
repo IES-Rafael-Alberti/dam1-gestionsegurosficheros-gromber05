@@ -1,14 +1,13 @@
 package com.dam1.model
 
 import com.dam1.ui.Errores
-import java.time.LocalDate
 
 class SeguroHogar: Seguro {
 
-    val metrosCuadrados: Int
-    val valorContenido: Double
-    val direccion: String
-    val anioConstruccion: Int
+    private val metrosCuadrados: Int
+    private val valorContenido: Double
+    private val direccion: String
+    private val anioConstruccion: Int
 
     constructor(
         numPoliza: Int,
@@ -35,8 +34,8 @@ class SeguroHogar: Seguro {
             return ++numPolizasHogar
         }
 
-        fun crearSeguro(datos: List<String>): SeguroHogar? {
-            return try {
+        fun crearSeguro(datos: List<String>): SeguroHogar {
+
                 val dniTitular = datos[1]
                 val importe = datos[2].toDouble()
                 val metrosCuadrados = datos[3].toInt()
@@ -44,11 +43,7 @@ class SeguroHogar: Seguro {
                 val direccion = datos[5]
                 val anioConstruccion = datos[6].toInt()
 
-                SeguroHogar(generarPoliza(), dniTitular, importe, metrosCuadrados, valorContenido, direccion, anioConstruccion)
-            } catch (e: Exception) {
-                println(Errores.datosEquivocado)
-                null
-            }
+                return SeguroHogar(generarPoliza(), dniTitular, importe, metrosCuadrados, valorContenido, direccion, anioConstruccion)
         }
 
     }

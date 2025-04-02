@@ -1,6 +1,5 @@
 package com.dam1.model
 
-import com.dam1.model.SeguroAuto.Companion.generarPoliza
 import com.dam1.ui.Errores
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -28,8 +27,7 @@ class SeguroVida: Seguro {
     companion object {
         var numPolizasVida = 800000
 
-        fun crearSeguro(datos: List<String>): SeguroVida? {
-            return try {
+        fun crearSeguro(datos: List<String>): SeguroVida {
                 val numPoliza = generarPoliza()
                 val dniTitular = datos[1]
                 val importe = datos[2].toDouble()
@@ -38,11 +36,11 @@ class SeguroVida: Seguro {
                 val indemnizacion = datos[5].toDouble()
 
 
-                SeguroVida(numPoliza, dniTitular, importe, fechaNac, nivelRiesgo,  indemnizacion)
-            } catch (e: Exception) {
-                println(Errores.datosEquivocado)
-                null
-            }
+                return SeguroVida(numPoliza, dniTitular, importe, fechaNac, nivelRiesgo,  indemnizacion)
+        }
+
+        fun generarPoliza(): Int {
+            return ++numPolizasVida
         }
     }
 

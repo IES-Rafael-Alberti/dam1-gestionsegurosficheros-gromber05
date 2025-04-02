@@ -1,8 +1,5 @@
 package com.dam1.model
 
-import com.dam1.ui.Errores
-import com.dam1.utils.utils
-
 class Usuario(
     var nombre: String,
     clave: String,

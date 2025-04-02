@@ -2,42 +2,48 @@ package com.dam1.data
 
 import com.dam1.model.Perfil
 import com.dam1.model.Usuario
-import com.dam1.ui.Output
 import com.dam1.utils.IUtilFicheros
-import java.io.File
 
 class RepoUsuariosFich(
-    private val ui: Output,
     private val fich: IUtilFicheros,
     private val rutaArchivo: String,
     private val separador: String = ";",
-) : RepoUsuariosMem(ui), ICargarUsuariosIniciales {
+) : RepoUsuariosMem(), ICargarUsuariosIniciales {
+
     override fun cargarUsuarios(): Boolean {
         if (fich.existeFichero(rutaArchivo)) {
             fich.leerArchivo(rutaArchivo).forEach { usuario ->
-                Usuario.crearUsuario(listOf(usuario[0].toString(), usuario[1].toString(), usuario[2].toString()))
+                val usuarioTemp = Usuario.crearUsuario(listOf(usuario[0].toString(), usuario[1].toString(), usuario[2].toString()))
+                usuarios.plus(usuarioTemp)
             }
             return true
         } else return false
     }
 
     override fun obtenerTodos(): List<Usuario> {
-        return super.obtenerTodos()
-    }
-
-    override fun agregar(usuario: Usuario): Boolean {
-        fich.leerArchivo(rutaArchivo).forEach { usuarioRan ->
-
+        if (fich.existeFichero(rutaArchivo)) {
+            var listaUsuarioTemp = mutableListOf<Usuario>()
+            fich.leerArchivo(rutaArchivo).forEach { usuario ->
+                TODO()
+            }
         }
         TODO()
     }
 
+    override fun agregar(usuario: Usuario): Boolean {
+        if (!fich.leerArchivo(rutaArchivo).contains(usuario.serializar())) {
+            val usuarioTemp = Usuario.crearUsuario(listOf(usuario.nombre, usuario.clave, usuario.perfil.toString()))
+            usuarios.plus(usuarioTemp)
+            return true
+        } else return false
+    }
+
     override fun buscar(nombreUsuario: String): Usuario? {
-        return super.buscar(nombreUsuario)
+        TODO()
     }
 
     override fun eliminar(nombreUsuario: String): Boolean {
-        return super.eliminar(nombreUsuario)
+        TODO()
     }
 
     override fun eliminar(usuario: Usuario): Boolean {
@@ -48,10 +54,10 @@ class RepoUsuariosFich(
     }
 
     override fun obtener(perfil: Perfil): List<Usuario> {
-        return super.obtener(perfil)
+        TODO()
     }
 
     override fun cambiarClave(usuario: Usuario, nuevaClave: String): Boolean {
-        return super.cambiarClave(usuario, nuevaClave)
+        TODO()
     }
 }

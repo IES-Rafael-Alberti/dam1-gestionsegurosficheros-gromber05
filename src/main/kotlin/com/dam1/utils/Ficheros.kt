@@ -2,11 +2,11 @@ package com.dam1.utils
 
 import com.dam1.model.IExportable
 import com.dam1.ui.Errores
-import com.dam1.ui.Output
+import com.dam1.ui.IEntradaSalida
 import java.io.File
 import java.io.IOException
 
-class Ficheros(private val consola: Output) :IUtilFicheros {
+class Ficheros(private val consola: IEntradaSalida) :IUtilFicheros {
 
     override fun existeDirectorio(ruta: String): Boolean {
         return File(ruta).exists() && File(ruta).isDirectory

@@ -1,10 +1,10 @@
 package com.dam1.data
 
 import com.dam1.model.Seguro
-import com.dam1.ui.Output
+import com.dam1.ui.IEntradaSalida
 
 open class RepoSegurosMem(
-    private val ui: Output
+    private val ui: IEntradaSalida
 ): IRepoSeguros {
 
     val listaSeguros = mutableListOf<Seguro>()

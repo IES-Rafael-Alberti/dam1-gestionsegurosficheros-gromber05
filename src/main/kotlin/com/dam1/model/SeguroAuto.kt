@@ -1,7 +1,5 @@
 package com.dam1.model
 
-import com.dam1.model.SeguroHogar.Companion
-import com.dam1.model.SeguroHogar.Companion.numPolizasHogar
 import com.dam1.ui.Errores
 
 class SeguroAuto : Seguro {
@@ -36,8 +34,7 @@ class SeguroAuto : Seguro {
         var numPolizasAuto: Int = 400000
         val PORCENTAJE_INCREMENTO_PARTES = 2.0
 
-        fun crearSeguro(datos: List<String>): SeguroAuto? {
-            return try {
+        fun crearSeguro(datos: List<String>): SeguroAuto {
                 val numPoliza = generarPoliza()
                 val dniTitular = datos[1]
                 val importe = datos[2].toDouble()
@@ -48,11 +45,7 @@ class SeguroAuto : Seguro {
                 val asistenciaCarretera = datos[7].toBoolean()
                 val numPartes = datos[8].toInt()
 
-                SeguroAuto(numPoliza, dniTitular, importe, descripcion, combustible, tipoAuto, tipoCobertura, asistenciaCarretera, numPartes)
-            } catch (e: Exception) {
-                println(Errores.datosEquivocado)
-                null
-            }
+                return SeguroAuto(numPoliza, dniTitular, importe, descripcion, combustible, tipoAuto, tipoCobertura, asistenciaCarretera, numPartes)
         }
 
         fun generarPoliza(): Int {

@@ -1,8 +1,5 @@
 package com.dam1.model
 
-import com.dam1.ui.Consola
-import com.dam1.ui.Output
-
 abstract class Seguro(
     val numPoliza: Int,
     private val dniTitular: String,

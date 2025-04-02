@@ -2,9 +2,8 @@ package com.dam1.data
 
 import com.dam1.model.Perfil
 import com.dam1.model.Usuario
-import com.dam1.ui.Output
 
-open class RepoUsuariosMem(private val ui: Output) : IRepoUsuarios {
+open class RepoUsuariosMem : IRepoUsuarios {
 
     val usuarios = mutableListOf<Usuario>()
 
