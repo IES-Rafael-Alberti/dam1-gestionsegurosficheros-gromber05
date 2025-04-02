@@ -26,13 +26,13 @@ class SeguroHogar: Seguro {
     }
 
     companion object {
-        var numPolizasHogar : Int = 0
+        var numPolizasHogar : Int = 100000
         val PORCENTAJE_INCREMENTOS_ANIOS = 0.02
         val CICLO_ANIOS_INCREMENTO = 5
         val anioActual = 2025
 
         fun generarPoliza() : Int {
-            return numPolizasHogar++
+            return ++numPolizasHogar
         }
 
         fun crearSeguro(datos: List<String>): SeguroHogar? {
@@ -79,7 +79,6 @@ class SeguroHogar: Seguro {
 
     override fun toString(): String {
         return "${super.toString().replace("Seguro(", "SeguroHogar(").dropLast(1)},metrosCuadrados= $metrosCuadrados, valorContenido = $valorContenido, direccion = $direccion)"
-
     }
 
     override fun serializar(separador: String): String {

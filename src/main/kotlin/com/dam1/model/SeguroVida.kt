@@ -1,12 +1,16 @@
 package com.dam1.model
 
+import com.dam1.model.SeguroAuto.Companion.generarPoliza
+import com.dam1.ui.Errores
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 class SeguroVida: Seguro {
 
-    val fechaNac: LocalDate
-    val nivelRiesgo: Riesgo
-    val indemnizacion: Double
+    private val fechaNac: LocalDate
+    private val nivelRiesgo: Riesgo
+    private val indemnizacion: Double
 
     constructor(
         numPoliza: Int,
@@ -21,12 +25,45 @@ class SeguroVida: Seguro {
         this.indemnizacion = indemnizacion
     }
 
+    companion object {
+        var numPolizasVida = 800000
+
+        fun crearSeguro(datos: List<String>): SeguroVida? {
+            return try {
+                val numPoliza = generarPoliza()
+                val dniTitular = datos[1]
+                val importe = datos[2].toDouble()
+                val nivelRiesgo = Riesgo.getRiesgo(datos[3])
+                val fechaNac = LocalDate.parse(datos[4], DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                val indemnizacion = datos[5].toDouble()
+
+
+                SeguroVida(numPoliza, dniTitular, importe, fechaNac, nivelRiesgo,  indemnizacion)
+            } catch (e: Exception) {
+                consola.mostrarError(Errores.datosEquivocado)
+                null
+            }
+        }
+    }
+
 
     override fun calcularImporteAnioSiguiente(interes: Double): Double {
-        return super.calcularImporteAnioSiguiente(interes)
+        var interesAAplicar = nivelRiesgo.interesAplicado
+        val edad = ChronoUnit.YEARS.between(fechaNac, LocalDate.now())
+
+        for (anio in 0..edad) {
+            interesAAplicar += 0.05
+        }
+
+        return importe + (importe * interesAAplicar)
     }
 
     override fun serializar(separador: String): String {
         return "${super.serializar(separador)}$separador$fechaNac$separador$nivelRiesgo$separador$indemnizacion"
+    }
+
+    override fun toString(): String {
+        return "${super.toString().replace("Seguro(", "SeguroVida(").dropLast(1)},nivelRiesgo=$nivelRiesgo, fechaNac=$fechaNac, indemnizacion=$indemnizacion)"
+
     }
 }
