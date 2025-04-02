@@ -34,10 +34,7 @@ class GestorUsuarios(private val seguridad: IUtilSeguridad, private val repo: IR
     override fun iniciarSesion(nombre: String, clave: String): Perfil? {
         val usuario = repo.buscar(nombre)
 
-        if (usuario != null) {
-            usuario.clave == seguridad.encriptarClave(clave)
-            return usuario.perfil
-        } else return null
+        if (usuario != null && seguridad.verificarClave(clave, usuario.clave)) return usuario.perfil else return null
     }
 
 
