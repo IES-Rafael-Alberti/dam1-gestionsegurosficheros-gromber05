@@ -40,7 +40,7 @@ class SeguroVida: Seguro {
 
                 SeguroVida(numPoliza, dniTitular, importe, fechaNac, nivelRiesgo,  indemnizacion)
             } catch (e: Exception) {
-                consola.mostrarError(Errores.datosEquivocado)
+                println(Errores.datosEquivocado)
                 null
             }
         }

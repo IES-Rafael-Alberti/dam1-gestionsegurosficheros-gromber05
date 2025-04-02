@@ -46,7 +46,7 @@ class SeguroHogar: Seguro {
 
                 SeguroHogar(generarPoliza(), dniTitular, importe, metrosCuadrados, valorContenido, direccion, anioConstruccion)
             } catch (e: Exception) {
-                consola.mostrarError(Errores.datosEquivocado)
+                println(Errores.datosEquivocado)
                 null
             }
         }

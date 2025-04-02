@@ -2,18 +2,18 @@ package com.dam1.data
 
 import com.dam1.model.Perfil
 import com.dam1.model.Usuario
+import com.dam1.ui.Output
 
-open class RepoUsuariosMem() : IRepoUsuarios {
+open class RepoUsuariosMem(private val ui: Output) : IRepoUsuarios {
 
     val usuarios = mutableListOf<Usuario>()
 
-    override fun obtenerTodos(): List<Usuario> {
-        return usuarios
-    }
 
     override fun agregar(usuario: Usuario): Boolean {
-        usuarios.plus(usuario)
-        return true
+        if (buscar(usuario.nombre) == null) {
+            usuarios.plus(usuario)
+            return true
+        } else return false
     }
 
     override fun buscar(nombreUsuario: String): Usuario? {
@@ -32,8 +32,11 @@ open class RepoUsuariosMem() : IRepoUsuarios {
     }
 
     override fun eliminar(usuario: Usuario): Boolean {
-        usuarios.remove(usuario)
-        return true
+        if (usuarios.remove(usuario)) return true else return false
+    }
+
+    override fun obtenerTodos(): List<Usuario> {
+        return usuarios
     }
 
     override fun obtener(perfil: Perfil): List<Usuario> {

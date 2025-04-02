@@ -13,8 +13,6 @@ abstract class Seguro(
         fun validarDni(dni: String): Boolean {
             return dni.matches(Regex("^[0-9]{8}[A-Z]$"))
         }
-
-        val consola: Output = Consola()
     }
 
     abstract fun calcularImporteAnioSiguiente(interes: Double): Double

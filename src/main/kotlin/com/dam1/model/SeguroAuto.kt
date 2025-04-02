@@ -12,7 +12,6 @@ class SeguroAuto : Seguro {
     private var asistenciaCarretera: Boolean
     private val numPartes: Int
 
-
     constructor(
         numPoliza: Int,
         dniTitular: String,
@@ -51,7 +50,7 @@ class SeguroAuto : Seguro {
 
                 SeguroAuto(numPoliza, dniTitular, importe, descripcion, combustible, tipoAuto, tipoCobertura, asistenciaCarretera, numPartes)
             } catch (e: Exception) {
-                consola.mostrarError(Errores.datosEquivocado)
+                println(Errores.datosEquivocado)
                 null
             }
         }

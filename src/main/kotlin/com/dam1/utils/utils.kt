@@ -4,8 +4,6 @@ import com.dam1.ui.Consola
 
 object utils {
 
-    val consola = Consola()
-
     fun pedirDatos(valor: String): String {
         var opcion: String? = null
 

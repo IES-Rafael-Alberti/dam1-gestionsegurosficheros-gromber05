@@ -3,7 +3,7 @@ package com.dam1.data
 import com.dam1.model.Seguro
 import com.dam1.ui.Output
 
-class RepoSegurosMem(
+open class RepoSegurosMem(
     private val ui: Output
 ): IRepoSeguros {
 

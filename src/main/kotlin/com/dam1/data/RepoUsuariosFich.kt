@@ -2,10 +2,23 @@ package com.dam1.data
 
 import com.dam1.model.Perfil
 import com.dam1.model.Usuario
+import com.dam1.ui.Output
+import com.dam1.utils.IUtilFicheros
+import java.io.File
 
-class RepoUsuariosFich() : RepoUsuariosMem(), ICargarUsuariosIniciales {
+class RepoUsuariosFich(
+    private val ui: Output,
+    private val fich: IUtilFicheros,
+    private val rutaArchivo: String,
+    private val separador: String = ";",
+) : RepoUsuariosMem(ui), ICargarUsuariosIniciales {
     override fun cargarUsuarios(): Boolean {
-        TODO("Not yet implemented")
+        if (fich.existeFichero(rutaArchivo)) {
+            fich.leerArchivo(rutaArchivo).forEach { usuario ->
+                Usuario.crearUsuario(listOf(usuario[0].toString(), usuario[1].toString(), usuario[2].toString()))
+            }
+            return true
+        } else return false
     }
 
     override fun obtenerTodos(): List<Usuario> {
@@ -13,7 +26,10 @@ class RepoUsuariosFich() : RepoUsuariosMem(), ICargarUsuariosIniciales {
     }
 
     override fun agregar(usuario: Usuario): Boolean {
-        return super.agregar(usuario)
+        fich.leerArchivo(rutaArchivo).forEach { usuarioRan ->
+
+        }
+        TODO()
     }
 
     override fun buscar(nombreUsuario: String): Usuario? {
@@ -25,7 +41,10 @@ class RepoUsuariosFich() : RepoUsuariosMem(), ICargarUsuariosIniciales {
     }
 
     override fun eliminar(usuario: Usuario): Boolean {
-        return super.eliminar(usuario)
+        if (fich.escribirArchivo(rutaArchivo, usuarios.filter { it != usuario })) {
+            return super.eliminar(usuario)
+        }
+        return false
     }
 
     override fun obtener(perfil: Perfil): List<Usuario> {
