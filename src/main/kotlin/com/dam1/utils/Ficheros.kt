@@ -20,7 +20,7 @@ class Ficheros(private val consola: IEntradaSalida) :IUtilFicheros {
         return try {
             File(ruta).readLines()
         } catch (e: IOException) {
-            consola.mostrarError(Errores.fileError)
+            consola.mostrarError(Errores.fileError.name)
             emptyList()
         }
     }
@@ -30,7 +30,7 @@ class Ficheros(private val consola: IEntradaSalida) :IUtilFicheros {
             File(ruta).appendText("$linea\n")
             true
         } catch (e: IOException) {
-            consola.mostrarError(Errores.fileError)
+            consola.mostrarError(Errores.fileError.name)
             false
         }
     }
@@ -40,7 +40,7 @@ class Ficheros(private val consola: IEntradaSalida) :IUtilFicheros {
             File(ruta).writeText(elementos.joinToString("\n") { it.serializar() })
             true
         } catch (e: IOException) {
-            consola.mostrarError(Errores.fileError)
+            consola.mostrarError(Errores.fileError.name)
             false
         }
     }
