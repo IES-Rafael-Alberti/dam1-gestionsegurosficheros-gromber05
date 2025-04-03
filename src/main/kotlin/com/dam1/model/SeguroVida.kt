@@ -35,7 +35,6 @@ class SeguroVida: Seguro {
                 val fechaNac = LocalDate.parse(datos[4], DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                 val indemnizacion = datos[5].toDouble()
 
-
                 return SeguroVida(numPoliza, dniTitular, importe, fechaNac, nivelRiesgo,  indemnizacion)
         }
 

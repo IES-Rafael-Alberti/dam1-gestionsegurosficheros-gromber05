@@ -34,7 +34,7 @@ open class RepoSegurosMem(
     }
 
     override fun obtener(tipoSeguro: String): List<Seguro> {
-        return listaSeguros.filter { it -> it.hashCode() == tipoSeguro.hashCode() }
+        return listaSeguros.filter { it -> it.tipoSeguro().lowercase() ==  tipoSeguro }
     }
 
 }

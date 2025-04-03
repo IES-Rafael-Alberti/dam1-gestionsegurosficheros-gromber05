@@ -13,8 +13,8 @@ class Consola: IEntradaSalida {
         if (pausa) pausar()
     }
 
-    override fun mostrarError(error: Errores, pausa: Boolean) {
-        mostrarMsj("**ERROR** - (${error.name}): ${error.descripcion} ")
+    override fun mostrarError(error: String?, pausa: Boolean) {
+        mostrarMsj("**ERROR** - (${error ?: "ERROR DESCONOCIDO"}): (${Errores.getDescripcionError(error)})")
     }
 
     override fun pedirInfo(msj: String): String {
@@ -29,21 +29,15 @@ class Consola: IEntradaSalida {
     }
 
     override fun pedirInfo(msj: String, error: Errores, debeCumplir: (String) -> Boolean): String {
-        return try {
-            var temp = ""
+        var temp = ""
 
-            while (temp.isEmpty()) {
-                mostrarMsj(msj)
-                temp = readln()
-                require(debeCumplir(temp))
+        while (temp.isEmpty()) {
+            mostrarMsj(msj)
+            temp = readln()
+            require(debeCumplir(temp))
                 // if (debeCumplir(temp)) temp = readln() else throw IllegalArgumentException()
             }
-            temp
-        } catch (ie: IllegalArgumentException) {
-            mostrarError(error)
-            ""
-        }
-
+        return temp
     }
 
     override fun pedirInfoOculta(prompt: String): String {
@@ -58,13 +52,22 @@ class Consola: IEntradaSalida {
 
             reader.readLine(prompt, '*') // Oculta la contraseña con '*'
         } catch (e: UserInterruptException) {
-            mostrarError(Errores.entradaCancelada, pausa = false)
+            mostrarError(
+                Errores.entradaCancelada.name,
+                pausa = false
+            )
             ""
         } catch (e: EndOfFileException) {
-            mostrarError(Errores.finArchivo, pausa = false)
+            mostrarError(
+                Errores.finArchivo.name,
+                pausa = false
+            )
             ""
         } catch (e: Exception) {
-            mostrarError(Errores.errorLecturaContrasenia, pausa = false)
+            mostrarError(
+                Errores.errorLecturaContrasenia.name,
+                pausa = false
+            )
             ""
         }
     }
@@ -86,16 +89,10 @@ class Consola: IEntradaSalida {
     }
 
     override fun preguntar(mensaje: String): Boolean {
-        return try {
-            mostrarMsj(mensaje)
-            val opcion = readln().lowercase()
+        mostrarMsj(mensaje)
+        val opcion = readln().lowercase()
 
-            if (opcion == "s") true else if (opcion == "n") false else throw Exception()
-
-        } catch (e: Exception) {
-            mostrarError(Errores.datosEquivocado)
-            false
-        }
+        if (opcion == "s") return true else if (opcion == "n") return false else throw Exception(Errores.datosEquivocado.descripcion)
     }
 
     override fun pedirEntero(
@@ -104,11 +101,10 @@ class Consola: IEntradaSalida {
         errorConv: Errores,
         debeCumplir: (Int) -> Boolean
     ): Int {
-
             mostrarMsj(prompt)
             val opcion = readln().toIntOrNull()
-            require(opcion != null) { errorConv.descripcion }
-            require(debeCumplir(opcion)) { error.descripcion }
+            require(opcion != null) { errorConv }
+            require(debeCumplir(opcion)) { error }
 
             return opcion
 
@@ -120,19 +116,11 @@ class Consola: IEntradaSalida {
         errorConv: Errores,
         debeCumplir: (Double) -> Boolean
     ): Double {
-        return try {
             mostrarMsj(prompt)
             val opcion = readln().toDoubleOrNull()
             require(opcion != null) { errorConv }
             require(debeCumplir(opcion)) { error }
 
-            opcion
-        } catch (i: IllegalArgumentException) {
-            mostrarError(errorConv)
-            0.0
-        } catch (e: Exception) {
-            mostrarError(error)
-            0.0
-        }
+            return opcion
     }
 }

@@ -35,7 +35,6 @@ class SeguroHogar: Seguro {
         }
 
         fun crearSeguro(datos: List<String>): SeguroHogar {
-
                 val dniTitular = datos[1]
                 val importe = datos[2].toDouble()
                 val metrosCuadrados = datos[3].toInt()

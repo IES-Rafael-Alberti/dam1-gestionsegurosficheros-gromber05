@@ -1,5 +1,9 @@
 package com.dam1.app
 
+import com.dam1.service.IServUsuarios
+import com.dam1.ui.IEntradaSalida
+import com.dam1.utils.IUtilFicheros
+
 /**
  * Clase responsable del control de acceso de usuarios: alta inicial, inicio de sesión
  * y recuperación del perfil. Su objetivo es asegurar que al menos exista un usuario
@@ -19,7 +23,10 @@ package com.dam1.app
  * @property ui Interfaz para mostrar mensajes y recoger entradas del usuario.
  * @property ficheros Utilidad para operar con ficheros (leer, comprobar existencia...).
  */
-class ControlAcceso
+class ControlAcceso(private val rutaArchivos: String,
+                    private val gestorUsuarios: IServUsuarios,
+                    private val ui : IEntradaSalida,
+                    private val ficheros: IUtilFicheros)
 {
 
     /**

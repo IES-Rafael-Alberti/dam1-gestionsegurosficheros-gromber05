@@ -1,21 +1,19 @@
 package com.dam1.model
 
-import com.dam1.ui.Errores
-
 class SeguroAuto : Seguro {
     private val descripcion: String
-    private val combustible: Double
+    private val combustible: String
     private val tipoAuto: Auto
     private val tipoCobertura: Cobertura
     private var asistenciaCarretera: Boolean
     private val numPartes: Int
 
     constructor(
-        numPoliza: Int,
+        numPoliza: Int = generarPoliza(),
         dniTitular: String,
         importe: Double,
         descripcion: String,
-        combustible: Double,
+        combustible: String,
         tipoAuto: Auto,
         tipoCobertura: Cobertura,
         asistenciaCarretera: Boolean,
@@ -39,7 +37,7 @@ class SeguroAuto : Seguro {
                 val dniTitular = datos[1]
                 val importe = datos[2].toDouble()
                 val descripcion = datos[3]
-                val combustible = datos[4].toDouble()
+                val combustible = datos[4]
                 val tipoAuto = Auto.getAuto(datos[5])
                 val tipoCobertura = Cobertura.getCobertura(datos[6])
                 val asistenciaCarretera = datos[7].toBoolean()
@@ -58,7 +56,7 @@ class SeguroAuto : Seguro {
         numPoliza: Int = numPolizasAuto,
         importe: Double,
         descripcion: String,
-        combustible: Double,
+        combustible: String,
         tipoAuto: Auto,
         tipoCobertura: Cobertura,
         asistenciaCarretera: Boolean,

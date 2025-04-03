@@ -1,5 +1,9 @@
 package com.dam1.app
 
+import com.dam1.data.IRepoSeguros
+import com.dam1.data.IRepoUsuarios
+import com.dam1.ui.IEntradaSalida
+
 /**
  * Clase encargada de cargar los datos iniciales de usuarios y seguros desde ficheros,
  * necesarios para el funcionamiento del sistema en modo persistente.
@@ -8,7 +12,11 @@ package com.dam1.app
  * @param repoUsuarios Repositorio que permite cargar usuarios desde un fichero.
  * @param repoSeguros Repositorio que permite cargar seguros desde un fichero.
  */
-class CargadorInicial
+class CargadorInicial(
+    private val ui: IEntradaSalida,
+    private val repoUsuarios: IRepoUsuarios,
+    private val repoSeguros: IRepoSeguros
+)
 {
 
     /**

@@ -24,7 +24,8 @@ class GestorUsuarios(private val seguridad: IUtilSeguridad, private val repo: IR
     }
 
     override fun cambiarClave(usuario: Usuario, nuevaClave: String): Boolean {
-        return repo.cambiarClave(usuario, nuevaClave)
+        val nuevaClave2 = seguridad.encriptarClave(nuevaClave)
+        return repo.cambiarClave(usuario, nuevaClave2)
     }
 
     override fun agregarUsuario(nombre: String, clave: String, perfil: Perfil): Boolean {

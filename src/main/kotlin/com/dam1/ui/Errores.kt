@@ -8,9 +8,18 @@ enum class Errores(val descripcion: String) {
     incumpleCondiciones("No se cumplen las condiciones introducidas"),
     entradaCancelada("Entrada cancelada por el usuario (Ctrl + C)."),
     finArchivo("Se alcanzó el final del archivo (EOF ó Ctrl+D)."),
-    errorLecturaContrasenia("Problema al leer la contraseña");
+    errorLecturaContrasenia("Problema al leer la contraseña"),
+    opcionInvalida("Opción no válida"),
+    errorDesconocido("Error desconocido");
 
     override fun toString(): String {
         return descripcion
+    }
+
+    companion object {
+        fun getDescripcionError(nombreError: String?): String {
+            return entries.find { it.name.equals(nombreError, ignoreCase = true) }?.descripcion
+                ?: "Error no encontrado"
+        }
     }
 }

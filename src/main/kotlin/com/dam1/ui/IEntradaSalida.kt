@@ -2,7 +2,7 @@ package com.dam1.ui
 
 interface IEntradaSalida {
     fun mostrarMsj(msj: String, salto: Boolean = true, pausa: Boolean = false)
-    fun mostrarError(error: Errores, pausa: Boolean = true)
+    fun mostrarError(error: String?, pausa: Boolean = true)
     fun pedirInfo(msj: String = ""): String
     fun pedirInfo(msj: String, error: Errores, debeCumplir: (String) -> Boolean): String
     fun pedirDouble(prompt: String, error: Errores, errorConv: Errores, debeCumplir: (Double) -> Boolean): Double

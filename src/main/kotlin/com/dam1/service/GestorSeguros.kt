@@ -28,10 +28,8 @@ class GestorSeguros(private val repo: IRepoSeguros): IServSeguros {
         asistenciaCarretera: Boolean,
         numPartes: Int
     ): Boolean {
-        val seguro = SeguroAuto.crearSeguro(mutableListOf(dniTitular, importe.toString(), descripcion, combustible.toString(), tipoAuto.toString(), cobertura.toString(), asistenciaCarretera.toString(), numPartes.toString()))
-        if (seguro != null) {
-            return repo.agregar(seguro)
-        } else return false
+        val seguro = SeguroAuto.crearSeguro(mutableListOf(dniTitular, importe.toString(), descripcion, combustible, tipoAuto.toString(), cobertura.toString(), asistenciaCarretera.toString(), numPartes.toString()))
+        if (repo.agregar(seguro)) return true else return false
     }
 
     override fun contratarSeguroHogar(
@@ -43,9 +41,7 @@ class GestorSeguros(private val repo: IRepoSeguros): IServSeguros {
         anioConstruccion: Int
     ): Boolean {
         val seguro = SeguroHogar.crearSeguro(mutableListOf(dniTitular, importe.toString(), metrosCuadrados.toString(), valorContenido.toString(), direccion, anioConstruccion.toString()))
-        if (seguro != null) {
-            return repo.agregar(seguro)
-        } else return false
+        if (repo.agregar(seguro)) return true else return false
     }
 
     override fun contratarSeguroVida(
@@ -56,9 +52,7 @@ class GestorSeguros(private val repo: IRepoSeguros): IServSeguros {
         indemnizacion: Double
     ): Boolean {
         val seguro = SeguroVida.crearSeguro(mutableListOf(dniTitular, importe.toString(), fechaNacimiento.toString(), nivelRiesgo.toString(), indemnizacion.toString()))
-        if (seguro != null) {
-            return repo.agregar(seguro)
-        } else return false
+        if (repo.agregar(seguro)) return true else return false
     }
 
 }
