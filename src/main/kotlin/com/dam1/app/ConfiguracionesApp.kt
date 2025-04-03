@@ -145,7 +145,7 @@ object ConfiguracionesApp {
         )
     )
 
-    /**
+     /**
      * Devuelve el par de lista de opciones del menú y las acciones asociadas a un determinado nivel,
      * en función del perfil de usuario.
      *

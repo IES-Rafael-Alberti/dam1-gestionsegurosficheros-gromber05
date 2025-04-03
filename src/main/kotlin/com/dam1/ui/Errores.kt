@@ -10,7 +10,8 @@ enum class Errores(val descripcion: String) {
     finArchivo("Se alcanzó el final del archivo (EOF ó Ctrl+D)."),
     errorLecturaContrasenia("Problema al leer la contraseña"),
     opcionInvalida("Opción no válida"),
-    errorDesconocido("Error desconocido");
+    errorDesconocido("Error desconocido"),
+    usuarioNoEncontrado("El usuario especificado no ha sido encontrado");
 
     override fun toString(): String {
         return descripcion

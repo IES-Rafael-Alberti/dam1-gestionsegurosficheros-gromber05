@@ -7,7 +7,11 @@ import com.dam1.model.SeguroVida
 import com.dam1.ui.IEntradaSalida
 import com.dam1.utils.IUtilFicheros
 
-class RepoSegurosFich(private val ui: IEntradaSalida, private val fich: IUtilFicheros): RepoSegurosMem(ui) {
+class RepoSegurosFich(
+    private val ui: IEntradaSalida,
+    private val fich: IUtilFicheros,
+    private val rutaArchivo: String
+): RepoSegurosMem(ui) {
 
     private fun actualizarContadores(seguros: List<Seguro>) {
         // Actualizar los contadores de polizas del companion object según el tipo de seguro
