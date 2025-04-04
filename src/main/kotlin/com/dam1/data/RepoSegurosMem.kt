@@ -3,11 +3,13 @@ package com.dam1.data
 import com.dam1.model.Seguro
 import com.dam1.ui.IEntradaSalida
 
-open class RepoSegurosMem(
-    private val ui: IEntradaSalida
-): IRepoSeguros {
+open class RepoSegurosMem(private val ui: IEntradaSalida): IRepoSeguros {
 
     val listaSeguros = mutableListOf<Seguro>()
+
+    override fun cargarSeguros(mapa: Map<String, (List<String>) -> Seguro>): Boolean {
+        TODO("Not yet implemented")
+    }
 
     override fun obtenerTodos(): List<Seguro> {
         return listaSeguros
@@ -30,7 +32,7 @@ open class RepoSegurosMem(
     }
 
     override fun eliminar(seguro: Seguro): Boolean {
-        if (listaSeguros.remove(seguro)) return true else return false
+        return listaSeguros.remove(seguro)
     }
 
     override fun obtener(tipoSeguro: String): List<Seguro> {

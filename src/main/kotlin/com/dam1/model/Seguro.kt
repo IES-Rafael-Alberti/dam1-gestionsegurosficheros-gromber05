@@ -31,6 +31,6 @@ abstract class Seguro(
     }
 
     override fun serializar(separador: String): String {
-        return "$numPoliza$separador$dniTitular$separador$importe"
+        return "${tipoSeguro()}$separador$numPoliza$separador$dniTitular$separador$importe"
     }
 }

@@ -42,7 +42,7 @@ fun main() {
     // Si se ha elegido almacenamiento persistente, se instancian los repositorios que usan ficheros.
     // Además, creamos una instancia del cargador inicial de información y lanzamos la carga desde los ficheros.
 
-    if (modo) {
+    if (!modo) {
         repoUsuarios = RepoUsuariosFich(gestorFicheros, rutaArchivoUsuarios)
 
         repoSeguros = RepoSegurosFich(

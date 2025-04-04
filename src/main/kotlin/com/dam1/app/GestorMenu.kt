@@ -4,10 +4,12 @@ package com.dam1.app
 import com.dam1.model.Auto
 import com.dam1.model.Cobertura
 import com.dam1.model.Perfil
+import com.dam1.model.Riesgo
 import com.dam1.service.IServSeguros
 import com.dam1.service.IServUsuarios
 import com.dam1.ui.Errores
 import com.dam1.ui.IEntradaSalida
+import java.time.LocalDate as LocalDate1
 
 /**
  * Clase encargada de gestionar el flujo de menús y opciones de la aplicación,
@@ -185,7 +187,27 @@ class GestorMenu(
 
         /** Crea un nuevo seguro de hogar solicitando los datos al usuario */
         fun contratarSeguroHogar() {
-            TODO("Implementar este método")
+            try {
+                val dniTitular = pedirDni()
+                val importe = ui.pedirDouble("Introduzca el importe »» ", Errores.datosEquivocado, Errores.errorLecturaContrasenia) { it > 0.0}
+                val descripcion = ui.pedirInfo("Introduzca la descripción »» ")
+                val combustible = ui.pedirInfo("Introduzca el tipo de combustible »» ")
+                val tipoAuto = ui.pedirInfo("Introduzca el tipo de auto »»")
+                val cobertura = ui.pedirInfo("Introduzca el tipo de cobertura »» ")
+                val asistenciaCarretera = ui.preguntar("¿Tiene permitido la asistencia en carretera? (s/n) »» ")
+                val numPartes = ui.pedirEntero("Introduzca el número de partes que posee el vehículo »» ", Errores.noNum, Errores.datosEquivocado) {it>0}
+
+                gestorSeguros.contratarSeguroHogar(
+                    dniTitular,
+                    importe,
+                    metrosCuadrados,
+                    valorContenido,
+                    direccion,
+                    anioConstruccion,
+                )
+            } catch (e: Exception) {
+                ui.mostrarError(e.message)
+            }
         }
 
         /** Crea un nuevo seguro de auto solicitando los datos al usuario */
@@ -217,7 +239,24 @@ class GestorMenu(
 
         /** Crea un nuevo seguro de vida solicitando los datos al usuario */
         fun contratarSeguroVida() {
-            TODO("Implementar este método")
+            try {
+                val dniTitular = pedirDni()
+                val importe = ui.pedirDouble("Introduzca el importe »» ", Errores.datosEquivocado, Errores.errorLecturaContrasenia) { it > 0.0}
+                val fechaNacimiento = LocalDate1.of(ui.pedirEntero("Introduzca el año de nacimiento »» ", Errores.opcionInvalida, Errores.datosEquivocado) { it in 0..3000 }, ui.pedirEntero("Introduzca el mes de nacimiento »» ", Errores.opcionInvalida, Errores.datosEquivocado) { it in (1..12) }, ui.pedirEntero("Introduzca el día de nacimiento »» ", Errores.opcionInvalida, Errores.datosEquivocado) { it in 1..31 })
+                val nivelRiesgo = Riesgo.getRiesgo(ui.pedirInfo("Introduzca el nivel de Riesgo (ALTO/MEDIO/BAJO) »» ").trim())
+                val indemnizacion = ui.pedirDouble("Introduzca la cantidad de indemnización »» ",  Errores.entradaCancelada, Errores.datosEquivocado) { it > 0 }
+
+
+                gestorSeguros.contratarSeguroVida(
+                    dniTitular,
+                    importe,
+                    fechaNacimiento,
+                    nivelRiesgo,
+                    indemnizacion
+                )
+            } catch (e: Exception) {
+                ui.mostrarError(e.message)
+            }
         }
 
         /** Elimina un seguro si existe por su número de póliza */

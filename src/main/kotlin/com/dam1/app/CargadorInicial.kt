@@ -26,7 +26,11 @@ class CargadorInicial(
      * Muestra errores si ocurre un problema en la lectura o conversión de datos.
      */
     fun cargarUsuarios() {
-        repoUsuarios.obtenerTodos()
+        try {
+            repoUsuarios.cargarUsuarios()
+        } catch (e: Exception) {
+            ui.mostrarMsj(Errores.fileError.descripcion)
+        }
     }
 
     /**
@@ -36,16 +40,8 @@ class CargadorInicial(
      * Muestra errores si ocurre un problema en la lectura o conversión de datos.
      */
     fun cargarSeguros() {
-        val segurosDatos = repoSeguros.obtenerTodos()
-
         try {
-            val seguros = segurosDatos.mapNotNull { dato ->
-                val tipo = dato.tipoSeguro()
-                val creadorSeguros = ConfiguracionesApp.mapaCrearSeguros[tipo]
-
-                if (creadorSeguros != null) creadorSeguros(dato) else throw Exception()
-
-            }
+            repoSeguros.cargarSeguros(ConfiguracionesApp.mapaCrearSeguros)
         } catch (e: Exception) {
             ui.mostrarMsj(Errores.fileError.descripcion)
         }
