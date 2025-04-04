@@ -12,6 +12,7 @@ class RepoUsuariosFich(
     override fun cargarUsuarios(): Boolean {
         if (fich.existeFichero(rutaArchivo)) {
             fich.leerArchivo(rutaArchivo).forEach { usuario ->
+                usuario.split(";")
                 val usuarioTemp = Usuario.crearUsuario(listOf(usuario[0].toString(), usuario[1].toString(), usuario[2].toString()))
                 RepoUsuariosMem().agregar(usuarioTemp)
             }

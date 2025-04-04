@@ -85,7 +85,7 @@ class Consola: IEntradaSalida {
 
     override fun pausar(msj: String) {
         mostrarMsj(msj)
-        readln()
+        Thread.sleep(3000)
     }
 
     override fun preguntar(mensaje: String): Boolean {
