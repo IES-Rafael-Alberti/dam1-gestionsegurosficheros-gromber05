@@ -13,8 +13,8 @@ fun main() {
 
     // Crear dos variables con las rutas de los archivos de texto donde se almacenan los usuarios y seguros.
     // Estos ficheros se usarán solo si el programa se ejecuta en modo de almacenamiento persistente.
-    val rutaArchivoSeguros = "/bd/seguros.txt"
-    val rutaArchivoUsuarios = "/bd/usuarios.txt"
+    val rutaArchivoSeguros = "./bd/seguros.txt"
+    val rutaArchivoUsuarios = "./bd/usuarios.txt"
 
     // Instanciamos los componentes base del sistema: la interfaz de usuario, el gestor de ficheros y el módulo de seguridad.
     // Estos objetos serán inyectados en los diferentes servicios y utilidades a lo largo del programa.
@@ -68,19 +68,18 @@ fun main() {
     val gestorSeguros = GestorSeguros(repoSeguros)
     val gestorUsuarios = GestorUsuarios(moduloSeguridad, repoUsuarios)
 
-    var usuario: Pair<String, Perfil?>?
     // Se inicia el proceso de autenticación. Se comprueba si hay usuarios en el sistema y se pide login.
     // Si no hay usuarios, se permite crear un usuario ADMIN inicial.
 
-    var nombreUsuario: String = ""
-
-    val login = ControlAcceso(rutaArchivoUsuarios, gestorUsuarios,interfazUsuario, gestorFicheros)
-    if (login.autenticar() == null) return else usuario = login.autenticar()
+    val controlAcceso = ControlAcceso(rutaArchivoUsuarios, gestorUsuarios,interfazUsuario, gestorFicheros)
+    val (nombre, perfil) = controlAcceso.autenticar()
 
     // Si el login fue exitoso (no es null), se inicia el menú correspondiente al perfil del usuario autenticado.
     // Se lanza el menú principal, **iniciarMenu(0)**, pasándole toda la información necesaria.
 
-    val gestorMenu = GestorMenu(nombreUsuario , usuario.perfil, interfazUsuario, gestorUsuarios, gestorSeguros)
-    gestorMenu.iniciarMenu()
+    if (nombre != null && perfil != null) {
+        val gestorMenu = GestorMenu(nombre, perfil.toString(), interfazUsuario, gestorUsuarios, gestorSeguros)
+        gestorMenu.iniciarMenu(perfil.indiceMenu)
+    }
 
 }

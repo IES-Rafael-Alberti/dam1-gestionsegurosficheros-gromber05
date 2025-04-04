@@ -1,7 +1,7 @@
 package com.dam1.model
 
-enum class Perfil {
-    ADMIN, GESTION, CONSULTA;
+enum class Perfil(val indiceMenu: Int) {
+    ADMIN(0), GESTION(1), CONSULTA(2);
 
     companion object {
         fun getPerfil(valor: String): Perfil {

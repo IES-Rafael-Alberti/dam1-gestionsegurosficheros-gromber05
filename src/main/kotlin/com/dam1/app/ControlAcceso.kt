@@ -43,15 +43,15 @@ class ControlAcceso(private val rutaArchivos: String,
      *
      * @return Un par (nombreUsuario, perfil) si el acceso fue exitoso, o `null` si el usuario cancela el acceso.
      */
-    fun autenticar(): Pair<String, Perfil?>? {
+    fun autenticar(): Pair<String?, Perfil?> {
 
-        var inicioSesion: Pair<String, Perfil?>? = null
+        var inicioSesion: Pair<String?, Perfil?>? = Pair(null, null)
 
         if (verificarFicheroUsuarios()) {
             inicioSesion = iniciarSesion()
         }
 
-        return inicioSesion
+        if (inicioSesion?.first != null && inicioSesion.second != null) return inicioSesion else return Pair(null, null)
     }
 
     /**
@@ -105,7 +105,7 @@ class ControlAcceso(private val rutaArchivos: String,
      * @return Un par (nombreUsuario, perfil) si las credenciales son correctas,
      *         o `null` si el usuario decide no continuar.
      */
-    private fun iniciarSesion(): Pair<String, Perfil?>? {
+    private fun iniciarSesion(): Pair<String?, Perfil?>{
         var nombreUsuario = ""
         var contrasenia = ""
 
@@ -114,6 +114,6 @@ class ControlAcceso(private val rutaArchivos: String,
             contrasenia = ui.pedirInfoOculta("Introduzca su contraseña »» ")
         }
 
-        return if (gestorUsuarios.iniciarSesion(nombreUsuario, contrasenia) == null) null else Pair(nombreUsuario, gestorUsuarios.iniciarSesion(nombreUsuario, contrasenia))
+        return if (gestorUsuarios.iniciarSesion(nombreUsuario, contrasenia) == null) Pair(null, null) else Pair(nombreUsuario, gestorUsuarios.iniciarSesion(nombreUsuario, contrasenia))
     }
 }
