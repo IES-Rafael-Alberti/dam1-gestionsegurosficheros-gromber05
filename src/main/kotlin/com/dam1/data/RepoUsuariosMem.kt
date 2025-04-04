@@ -5,24 +5,24 @@ import com.dam1.model.Usuario
 
 open class RepoUsuariosMem : IRepoUsuarios {
 
-    val usuarios = mutableListOf<Usuario>()
+    val listaUsuarios = mutableListOf<Usuario>()
 
     override fun agregar(usuario: Usuario): Boolean {
         if (buscar(usuario.nombre) == null) {
-            usuarios.add(usuario)
+            listaUsuarios.add(usuario)
             return true
         } else return false
     }
 
     override fun buscar(nombreUsuario: String): Usuario? {
-        return usuarios.find { it.nombre == nombreUsuario }
+        return listaUsuarios.find { it.nombre == nombreUsuario }
     }
 
     override fun eliminar(nombreUsuario: String): Boolean {
         val usuario = buscar(nombreUsuario)
 
         if (usuario != null) {
-            usuarios.remove(usuario)
+            listaUsuarios.remove(usuario)
             return true
         } else {
             return false
@@ -30,15 +30,15 @@ open class RepoUsuariosMem : IRepoUsuarios {
     }
 
     override fun eliminar(usuario: Usuario): Boolean {
-        if (usuarios.remove(usuario)) return true else return false
+        if (listaUsuarios.remove(usuario)) return true else return false
     }
 
     override fun obtenerTodos(): List<Usuario> {
-        return usuarios
+        return listaUsuarios
     }
 
     override fun obtener(perfil: Perfil): List<Usuario> {
-        return usuarios.filter { it.perfil == perfil }
+        return listaUsuarios.filter { it.perfil == perfil }
     }
 
     override fun cambiarClave(usuario: Usuario, nuevaClave: String): Boolean {

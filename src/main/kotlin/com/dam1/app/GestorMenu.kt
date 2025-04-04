@@ -86,6 +86,9 @@ class GestorMenu(
 
         /** Crea un nuevo usuario solicitando los datos necesarios al usuario */
         fun nuevoUsuario() {
+            ui.limpiarPantalla()
+            ui.mostrarMsj("--CREACIÓN DE USUARIO--")
+
             try {
                 val usuario = ui.pedirInfo("Introduzca el nombre de usuario »» ")
                 val clave = ui.pedirInfoOculta("Introduzca una contraseña »» ")
@@ -100,6 +103,9 @@ class GestorMenu(
 
         /** Elimina un usuario si existe */
         fun eliminarUsuario() {
+            ui.limpiarPantalla()
+            ui.mostrarMsj("---BORRADO DE USUARIO---")
+
             try {
                 val nombre = ui.pedirInfo("Introduzca el nombre del usuario que desee borrar »» ")
 
@@ -111,6 +117,9 @@ class GestorMenu(
 
         /** Cambia la contraseña del usuario actual */
         fun cambiarClaveUsuario() {
+            ui.limpiarPantalla()
+            ui.mostrarMsj("---CAMBIO DE CLAVE---")
+
             try {
                 val nombre = ui.pedirInfo("Introduzca el nombre de usuario al que desee cambiar la contraseña »» ")
                 val usuario = gestorUsuarios.buscarUsuario(nombre)
@@ -128,7 +137,11 @@ class GestorMenu(
          * Mostrar la lista de usuarios (Todos o filstrados por un perfil)
          */
         fun consultarUsuarios() {
-            gestorUsuarios.consultarTodos()
+            ui.mostrarMsj("---CONSULTA USUARIOS----")
+
+            gestorUsuarios.consultarTodos().forEach {
+                ui.mostrarMsj(it.toString())
+            }
         }
 
         /**
@@ -270,22 +283,30 @@ class GestorMenu(
 
         /** Muestra todos los seguros existentes */
         fun consultarSeguros() {
-            gestorSeguros.consultarTodos()
+            gestorSeguros.consultarTodos().forEach {
+                ui.mostrarMsj(it.toString())
+            }
         }
 
         /** Muestra todos los seguros de tipo hogar */
         fun consultarSegurosHogar() {
-            gestorSeguros.consultarPorTipo("segurohogar")
+            gestorSeguros.consultarPorTipo("segurohogar").forEach {
+                ui.mostrarMsj(it.toString())
+            }
         }
 
         /** Muestra todos los seguros de tipo auto */
         fun consultarSegurosAuto() {
-            gestorSeguros.consultarPorTipo("seguroauto")
+            gestorSeguros.consultarPorTipo("seguroauto").forEach {
+                ui.mostrarMsj(it.toString())
+            }
         }
 
         /** Muestra todos los seguros de tipo vida */
         fun consultarSegurosVida() {
-            gestorSeguros.consultarPorTipo("segurovida")
+            gestorSeguros.consultarPorTipo("segurovida").forEach {
+                ui.mostrarMsj(it.toString())
+            }
         }
 
     }

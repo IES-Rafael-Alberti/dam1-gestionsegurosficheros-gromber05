@@ -1,2 +1,0 @@
-admin;$2a$12$XSW5apdbpaeAF4fAG5cTve2hCoxiWJY4/RqSiXWyLejONPeIrJyqO;ADMIN
-paco;$2a$12$A78cSbl0NaX90HrMSXmuh.GWx0i.aUmEIxybdH0iSiQJjhY3AhXtG;GESTION

@@ -35,8 +35,7 @@ class Consola: IEntradaSalida {
             mostrarMsj(msj)
             temp = readln()
             require(debeCumplir(temp))
-                // if (debeCumplir(temp)) temp = readln() else throw IllegalArgumentException()
-            }
+        }
         return temp
     }
 

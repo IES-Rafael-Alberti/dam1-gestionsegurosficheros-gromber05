@@ -8,11 +8,9 @@ import com.dam1.ui.IEntradaSalida
 import com.dam1.utils.IUtilFicheros
 
 class RepoSegurosFich(
-    private val ui: IEntradaSalida,
     private val fich: IUtilFicheros,
     private val rutaArchivo: String,
-    private val separador: String = ";"
-): RepoSegurosMem(ui), ICargarSegurosIniciales {
+): RepoSegurosMem(), ICargarSegurosIniciales {
 
     private fun actualizarContadores(seguros: List<Seguro>) {
         // Actualizar los contadores de polizas del companion object según el tipo de seguro
@@ -54,7 +52,6 @@ class RepoSegurosFich(
 
     override fun eliminar(numPoliza: Int): Boolean {
         val seguro = buscar(numPoliza)
-
         fich.escribirArchivo(rutaArchivo, listaSeguros.filter { it != seguro })
         return super.eliminar(numPoliza)
     }

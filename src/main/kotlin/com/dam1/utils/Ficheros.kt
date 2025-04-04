@@ -31,7 +31,7 @@ class Ficheros(private val consola: IEntradaSalida) :IUtilFicheros {
             true
         } catch (e: IOException) {
             consola.mostrarError(Errores.fileError.name)
-            false
+            true
         }
     }
 

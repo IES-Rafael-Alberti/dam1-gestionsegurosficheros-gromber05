@@ -46,7 +46,6 @@ fun main() {
         repoUsuarios = RepoUsuariosFich(gestorFicheros, rutaArchivoUsuarios)
 
         repoSeguros = RepoSegurosFich(
-            interfazUsuario,
             gestorFicheros,
             rutaArchivoSeguros
 
@@ -58,10 +57,8 @@ fun main() {
         cargadorInicial.cargarUsuarios()
     } else {
         repoUsuarios = RepoUsuariosMem()
-        repoSeguros = RepoSegurosMem(interfazUsuario)
+        repoSeguros = RepoSegurosMem()
     }
-
-
 
     // Se crean los servicios de lógica de negocio, inyectando los repositorios y el componente de seguridad.
 
@@ -71,15 +68,26 @@ fun main() {
     // Se inicia el proceso de autenticación. Se comprueba si hay usuarios en el sistema y se pide login.
     // Si no hay usuarios, se permite crear un usuario ADMIN inicial.
 
-    val controlAcceso = ControlAcceso(rutaArchivoUsuarios, gestorUsuarios,interfazUsuario, gestorFicheros)
-    val (nombre, perfil) = controlAcceso.autenticar()
+    if (!modo) {
+        val controlAcceso = ControlAcceso(rutaArchivoUsuarios, gestorUsuarios,interfazUsuario, gestorFicheros)
+        val (nombre, perfil) = controlAcceso.autenticar()
+
+        if (nombre != null && perfil != null) {
+            val gestorMenu = GestorMenu(nombre, perfil.toString().lowercase(), interfazUsuario, gestorUsuarios, gestorSeguros)
+            gestorMenu.iniciarMenu(perfil.indiceMenu)
+        }
+
+    } else {
+        val (nombre, perfil) = Pair("admin", Perfil.ADMIN)
+
+        if (nombre != null && perfil != null) {
+            val gestorMenu = GestorMenu(nombre, perfil.toString().lowercase(), interfazUsuario, gestorUsuarios, gestorSeguros)
+            gestorFicheros.escribirArchivo(rutaArchivoSeguros, emptyList())
+            gestorMenu.iniciarMenu(perfil.indiceMenu)
+        }
+    }
 
     // Si el login fue exitoso (no es null), se inicia el menú correspondiente al perfil del usuario autenticado.
     // Se lanza el menú principal, **iniciarMenu(0)**, pasándole toda la información necesaria.
-
-    if (nombre != null && perfil != null) {
-        val gestorMenu = GestorMenu(nombre, perfil.toString().lowercase(), interfazUsuario, gestorUsuarios, gestorSeguros)
-        gestorMenu.iniciarMenu(perfil.indiceMenu)
-    }
 
 }

@@ -1,9 +1,8 @@
 package com.dam1.data
 
 import com.dam1.model.Seguro
-import com.dam1.ui.IEntradaSalida
 
-open class RepoSegurosMem(private val ui: IEntradaSalida): IRepoSeguros {
+open class RepoSegurosMem(): IRepoSeguros {
 
     val listaSeguros = mutableListOf<Seguro>()
 
@@ -12,7 +11,7 @@ open class RepoSegurosMem(private val ui: IEntradaSalida): IRepoSeguros {
     }
 
     override fun agregar(seguro: Seguro): Boolean {
-        listaSeguros.plus(seguro)
+        listaSeguros.add(seguro)
         return true
     }
 
@@ -32,7 +31,7 @@ open class RepoSegurosMem(private val ui: IEntradaSalida): IRepoSeguros {
     }
 
     override fun obtener(tipoSeguro: String): List<Seguro> {
-        return listaSeguros.filter { it -> it.tipoSeguro().lowercase() ==  tipoSeguro }
+        return listaSeguros.filter { it -> it.tipoSeguro().lowercase() == tipoSeguro }
     }
 
 }
