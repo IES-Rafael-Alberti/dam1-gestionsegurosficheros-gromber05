@@ -23,7 +23,7 @@ class Usuario(
     }
 
     fun cambiarClave(nuevaClave: String) {
-        val antiguaClave = nuevaClave
+        clave = nuevaClave
     }
 
     override fun serializar(separador: String): String {

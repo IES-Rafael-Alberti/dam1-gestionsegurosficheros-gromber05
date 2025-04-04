@@ -15,7 +15,7 @@ open class RepoUsuariosMem : IRepoUsuarios {
     }
 
     override fun buscar(nombreUsuario: String): Usuario? {
-        return usuarios.find { it.hashCode() == nombreUsuario.hashCode() }
+        return usuarios.find { it.nombre == nombreUsuario }
     }
 
     override fun eliminar(nombreUsuario: String): Boolean {

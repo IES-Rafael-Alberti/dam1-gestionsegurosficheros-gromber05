@@ -29,13 +29,13 @@ class GestorUsuarios(private val seguridad: IUtilSeguridad, private val repo: IR
     }
 
     override fun agregarUsuario(nombre: String, clave: String, perfil: Perfil): Boolean {
-        return repo.agregar(Usuario.crearUsuario(mutableListOf(nombre, clave, perfil.toString())))
+        val claveEncriptada = seguridad.encriptarClave(clave)
+        return repo.agregar(Usuario.crearUsuario(mutableListOf(nombre, claveEncriptada, perfil.toString())))
     }
 
     override fun iniciarSesion(nombre: String, clave: String): Perfil? {
-        val usuario = repo.buscar(nombre)
-
-        if (usuario != null && seguridad.verificarClave(clave, usuario.clave)) return usuario.perfil else return null
+        val usuarioExiste = buscarUsuario(nombre)
+        return if (usuarioExiste != null && seguridad.verificarClave(clave, usuarioExiste.clave)) usuarioExiste.perfil else null
     }
 
 

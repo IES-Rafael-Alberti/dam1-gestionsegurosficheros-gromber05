@@ -8,8 +8,8 @@ import org.jline.terminal.TerminalBuilder
 class Consola: IEntradaSalida {
 
     override fun mostrarMsj(msj: String, salto: Boolean, pausa: Boolean) {
-        println(msj)
-        if (salto) println()
+        print(msj)
+        if (salto) println("")
         if (pausa) pausar()
     }
 

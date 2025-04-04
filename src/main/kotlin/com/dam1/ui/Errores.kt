@@ -11,7 +11,8 @@ enum class Errores(val descripcion: String) {
     errorLecturaContrasenia("Problema al leer la contraseña"),
     opcionInvalida("Opción no válida"),
     errorDesconocido("Error desconocido"),
-    usuarioNoEncontrado("El usuario especificado no ha sido encontrado");
+    usuarioNoEncontrado("El usuario especificado no ha sido encontrado"),
+    contraseniaCaracteres("La contraseña debe cumplir los parámetros");
 
     override fun toString(): String {
         return descripcion

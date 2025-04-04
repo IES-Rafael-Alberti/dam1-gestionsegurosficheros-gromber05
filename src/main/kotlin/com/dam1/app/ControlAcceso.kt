@@ -26,11 +26,7 @@ import com.dam1.utils.IUtilFicheros
  * @property ui Interfaz para mostrar mensajes y recoger entradas del usuario.
  * @property ficheros Utilidad para operar con ficheros (leer, comprobar existencia...).
  */
-class ControlAcceso(private val rutaArchivos: String,
-                    private val gestorUsuarios: IServUsuarios,
-                    private val ui : IEntradaSalida,
-                    private val ficheros: IUtilFicheros)
-{
+class ControlAcceso(val rutaArchivo: String, val gestorUsuarios: IServUsuarios, val consola: IEntradaSalida, val ficheros: IUtilFicheros) {
 
     /**
      * Inicia el proceso de autenticación del sistema.
@@ -44,76 +40,76 @@ class ControlAcceso(private val rutaArchivos: String,
      * @return Un par (nombreUsuario, perfil) si el acceso fue exitoso, o `null` si el usuario cancela el acceso.
      */
     fun autenticar(): Pair<String?, Perfil?> {
-
-        var inicioSesion: Pair<String?, Perfil?>? = Pair(null, null)
-
-        if (verificarFicheroUsuarios()) {
-            inicioSesion = iniciarSesion()
+        if (verificarFicheroUsuarios()){
+            val (nombre, perfil) = iniciarSesion()
+            if (nombre != null && perfil != null) {
+                return Pair(nombre, perfil)
+            }
         }
-
-        if (inicioSesion?.first != null && inicioSesion.second != null) return inicioSesion else return Pair(null, null)
+        return Pair(null, null)
     }
 
-    /**
-     * Verifica si el archivo de usuarios existe y contiene al menos un usuario registrado.
-     *
-     * Si el fichero no existe o está vacío, se informa al usuario y se le pregunta si desea
-     * registrar un nuevo usuario con perfil ADMIN.
-     *
-     * Este método se asegura de que siempre haya al menos un usuario en el sistema.
-     *
-     * @return `true` si el proceso puede continuar (hay al menos un usuario),
-     *         `false` si el usuario cancela la creación inicial o ocurre un error.
-     */
-    private fun verificarFicheroUsuarios(): Boolean {
-        val falso: Boolean
-
-        return try {
-            if (!ficheros.existeFichero(rutaArchivos)) {
-                ui.mostrarMsj("La base de datos no existe, creando una nueva...")
-                ficheros.escribirArchivo(rutaArchivos, emptyList())
-
-                val opcion = ui.preguntar("No se ha encontrado ningún usuario, ¿desea crear un usuario admin? (s/n) »» ")
-
-                if (opcion) {
-                    var nombreUsuario = ""
-                    var contrasenia = ""
-
-                    while (nombreUsuario.isEmpty() || contrasenia.isEmpty()) {
-                        nombreUsuario = ui.pedirInfo("Introduzca su nombre de usuario »» ")
-                        contrasenia = ui.pedirInfoOculta("Introduzca su contraseña »» ")
-                    }
-
-                    falso = gestorUsuarios.agregarUsuario(nombreUsuario, contrasenia, Perfil.ADMIN)
-
-                } else falso = false
-
-                falso
-            } else if (ficheros.existeFichero(rutaArchivos) && ficheros.leerArchivo(rutaArchivos).isNotEmpty()) true else false
-        } catch (e: Exception) {
-            ui.mostrarError(Errores.fileError.descripcion)
-            false
+    fun verificarFicheroUsuarios(): Boolean {
+        if (!ficheros.existeFichero(rutaArchivo) || ficheros.leerArchivo(rutaArchivo).isEmpty()){
+            consola.mostrarMsj("El fichero está vacío, no hay usuarios existentes.")
+            if (consola.preguntar("¿Desea crear un usuario nuevo ADMIN?")){
+                crearUsuario()
+                return true
+            }else{
+                return false
+            }
+        }else{
+            return true
         }
     }
 
-    /**
-     * Solicita al usuario sus credenciales (usuario y contraseña) en un bucle hasta
-     * que sean válidas o el usuario decida cancelar.
-     *
-     * Si la autenticación es exitosa, se retorna el nombre del usuario y su perfil.
-     *
-     * @return Un par (nombreUsuario, perfil) si las credenciales son correctas,
-     *         o `null` si el usuario decide no continuar.
-     */
+    private fun crearUsuario(): Boolean{
+        var usuarioCorrecto = false
+        var nombreUsuario: String
+        var clave: String
+        do{
+            try{
+                nombreUsuario = consola.pedirInfo("Introduce un nombre de usuario")
+                clave = consola.pedirInfo("Introduce una clave", Errores.contraseniaCaracteres){
+                    it.length >= 5
+                }
+                if (gestorUsuarios.agregarUsuario(nombreUsuario, clave, Perfil.ADMIN)){
+                    usuarioCorrecto = true
+                }
+                usuarioCorrecto = true
+            }catch(e:Exception){
+                consola.mostrarError(e.message)
+            }
+        }while (!usuarioCorrecto)
+        return usuarioCorrecto
+    }
+
     private fun iniciarSesion(): Pair<String?, Perfil?>{
-        var nombreUsuario = ""
-        var contrasenia = ""
+        var usuarioSalir = false
+        var nombre: String?
+        var clave: String
+        var perfil: Perfil?
+        do{
+            try{
+                consola.limpiarPantalla()
+                nombre = consola.pedirInfo("Introduce el nombre de usuario o salir si no desea continuar.")
+                if ( nombre == "salir" ) usuarioSalir = true
 
-        while (nombreUsuario.isEmpty() || contrasenia.isEmpty()) {
-            nombreUsuario = ui.pedirInfo("Introduzca su nombre de usuario »» ")
-            contrasenia = ui.pedirInfoOculta("Introduzca su contraseña »» ")
-        }
+                clave = consola.pedirInfo("Introduce la clave")
+                perfil = gestorUsuarios.iniciarSesion(nombre,clave)
 
-        return if (gestorUsuarios.iniciarSesion(nombreUsuario, contrasenia) == null) Pair(null, null) else Pair(nombreUsuario, gestorUsuarios.iniciarSesion(nombreUsuario, contrasenia))
+                if (perfil == null){
+                    throw IllegalArgumentException(Errores.contraseniaEquivocada.name)
+                }else{
+                    usuarioSalir = true
+                    return Pair(nombre, perfil)
+                }
+            }catch(e:IllegalArgumentException){
+                consola.mostrarError(e.message)
+            }catch (e:Exception){
+                consola.mostrarError(e.message)
+            }
+        }while (!usuarioSalir)
+        return Pair(null, null)
     }
 }
