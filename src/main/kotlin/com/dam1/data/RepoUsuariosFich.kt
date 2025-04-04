@@ -7,7 +7,7 @@ import com.dam1.utils.IUtilFicheros
 class RepoUsuariosFich(
     private val fich: IUtilFicheros,
     private val rutaArchivo: String,
-) : RepoUsuariosMem(){
+) : RepoUsuariosMem(), ICargarUsuariosIniciales{
 
     override fun cargarUsuarios(): Boolean {
         if (fich.existeFichero(rutaArchivo)) {

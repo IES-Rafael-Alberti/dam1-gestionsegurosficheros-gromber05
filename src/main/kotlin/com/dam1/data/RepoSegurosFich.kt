@@ -12,7 +12,7 @@ class RepoSegurosFich(
     private val fich: IUtilFicheros,
     private val rutaArchivo: String,
     private val separador: String = ";"
-): RepoSegurosMem(ui) {
+): RepoSegurosMem(ui), ICargarSegurosIniciales {
 
     private fun actualizarContadores(seguros: List<Seguro>) {
         // Actualizar los contadores de polizas del companion object según el tipo de seguro

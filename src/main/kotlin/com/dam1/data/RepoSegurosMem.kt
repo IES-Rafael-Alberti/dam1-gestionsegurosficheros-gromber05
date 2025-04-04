@@ -7,10 +7,6 @@ open class RepoSegurosMem(private val ui: IEntradaSalida): IRepoSeguros {
 
     val listaSeguros = mutableListOf<Seguro>()
 
-    override fun cargarSeguros(mapa: Map<String, (List<String>) -> Seguro>): Boolean {
-        TODO("Not yet implemented")
-    }
-
     override fun obtenerTodos(): List<Seguro> {
         return listaSeguros
     }

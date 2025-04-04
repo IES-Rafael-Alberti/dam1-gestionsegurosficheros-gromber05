@@ -49,13 +49,19 @@ fun main() {
             interfazUsuario,
             gestorFicheros,
             rutaArchivoSeguros
+
         )
+
+        val cargadorInicial = CargadorInicial(interfazUsuario, repoUsuarios, repoSeguros)
+
+        cargadorInicial.cargarSeguros()
+        cargadorInicial.cargarUsuarios()
     } else {
         repoUsuarios = RepoUsuariosMem()
         repoSeguros = RepoSegurosMem(interfazUsuario)
     }
 
-    val cargadorInicial = CargadorInicial(interfazUsuario, repoUsuarios, repoSeguros)
+
 
     // Se crean los servicios de lógica de negocio, inyectando los repositorios y el componente de seguridad.
 
@@ -70,8 +76,6 @@ fun main() {
 
     val login = ControlAcceso(rutaArchivoUsuarios, gestorUsuarios,interfazUsuario, gestorFicheros)
     if (login.autenticar() == null) return else usuario = login.autenticar()
-
-    if (usuario.first != null) nombreUsuario = usuario?.first ?: ""
 
     // Si el login fue exitoso (no es null), se inicia el menú correspondiente al perfil del usuario autenticado.
     // Se lanza el menú principal, **iniciarMenu(0)**, pasándole toda la información necesaria.

@@ -189,13 +189,11 @@ class GestorMenu(
         fun contratarSeguroHogar() {
             try {
                 val dniTitular = pedirDni()
-                val importe = ui.pedirDouble("Introduzca el importe »» ", Errores.datosEquivocado, Errores.errorLecturaContrasenia) { it > 0.0}
-                val descripcion = ui.pedirInfo("Introduzca la descripción »» ")
-                val combustible = ui.pedirInfo("Introduzca el tipo de combustible »» ")
-                val tipoAuto = ui.pedirInfo("Introduzca el tipo de auto »»")
-                val cobertura = ui.pedirInfo("Introduzca el tipo de cobertura »» ")
-                val asistenciaCarretera = ui.preguntar("¿Tiene permitido la asistencia en carretera? (s/n) »» ")
-                val numPartes = ui.pedirEntero("Introduzca el número de partes que posee el vehículo »» ", Errores.noNum, Errores.datosEquivocado) {it>0}
+                val importe = pedirImporte()
+                val metrosCuadrados = ui.pedirEntero("Introduzca los metros cuadrados de la vivienda »» ", Errores.noNum, Errores.datosEquivocado) {it>0}
+                val valorContenido = ui.pedirDouble("Introduzca el valor del contenido »» ", Errores.datosEquivocado, Errores.errorLecturaContrasenia) { it > 0.0}
+                val direccion = ui.pedirInfo()
+                val anioConstruccion = ui.pedirEntero("Introduzca el año de construcción de la vivienda »» ", Errores.noNum, Errores.datosEquivocado) {it in 1200..2999}
 
                 gestorSeguros.contratarSeguroHogar(
                     dniTitular,
@@ -214,7 +212,7 @@ class GestorMenu(
         fun contratarSeguroAuto() {
             try {
                 val dniTitular = pedirDni()
-                val importe = ui.pedirDouble("Introduzca el importe »» ", Errores.datosEquivocado, Errores.errorLecturaContrasenia) { it > 0.0}
+                val importe = pedirImporte()
                 val descripcion = ui.pedirInfo("Introduzca la descripción »» ")
                 val combustible = ui.pedirInfo("Introduzca el tipo de combustible »» ")
                 val tipoAuto = ui.pedirInfo("Introduzca el tipo de auto »»")
@@ -241,7 +239,7 @@ class GestorMenu(
         fun contratarSeguroVida() {
             try {
                 val dniTitular = pedirDni()
-                val importe = ui.pedirDouble("Introduzca el importe »» ", Errores.datosEquivocado, Errores.errorLecturaContrasenia) { it > 0.0}
+                val importe = pedirImporte()
                 val fechaNacimiento = LocalDate1.of(ui.pedirEntero("Introduzca el año de nacimiento »» ", Errores.opcionInvalida, Errores.datosEquivocado) { it in 0..3000 }, ui.pedirEntero("Introduzca el mes de nacimiento »» ", Errores.opcionInvalida, Errores.datosEquivocado) { it in (1..12) }, ui.pedirEntero("Introduzca el día de nacimiento »» ", Errores.opcionInvalida, Errores.datosEquivocado) { it in 1..31 })
                 val nivelRiesgo = Riesgo.getRiesgo(ui.pedirInfo("Introduzca el nivel de Riesgo (ALTO/MEDIO/BAJO) »» ").trim())
                 val indemnizacion = ui.pedirDouble("Introduzca la cantidad de indemnización »» ",  Errores.entradaCancelada, Errores.datosEquivocado) { it > 0 }

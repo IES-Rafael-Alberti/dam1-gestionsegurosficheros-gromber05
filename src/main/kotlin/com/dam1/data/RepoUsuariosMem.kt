@@ -7,10 +7,6 @@ open class RepoUsuariosMem : IRepoUsuarios {
 
     val usuarios = mutableListOf<Usuario>()
 
-    override fun cargarUsuarios(): Boolean {
-        TODO("Not yet implemented")
-    }
-
     override fun agregar(usuario: Usuario): Boolean {
         if (buscar(usuario.nombre) == null) {
             usuarios.plus(usuario)

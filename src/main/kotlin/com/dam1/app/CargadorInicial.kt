@@ -1,5 +1,7 @@
 package com.dam1.app
 
+import com.dam1.data.ICargarSegurosIniciales
+import com.dam1.data.ICargarUsuariosIniciales
 import com.dam1.data.IRepoSeguros
 import com.dam1.data.IRepoUsuarios
 import com.dam1.model.Seguro
@@ -17,8 +19,8 @@ import com.dam1.utils.IUtilFicheros
  */
 class CargadorInicial(
     private val ui: IEntradaSalida,
-    private val repoUsuarios: IRepoUsuarios,
-    private val repoSeguros: IRepoSeguros, )
+    private val repoUsuarios: ICargarUsuariosIniciales,
+    private val repoSeguros: ICargarSegurosIniciales, )
 {
 
     /**
