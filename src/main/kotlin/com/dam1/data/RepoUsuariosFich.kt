@@ -22,9 +22,9 @@ class RepoUsuariosFich(
 
     override fun obtenerTodos(): List<Usuario> {
         if (fich.existeFichero(rutaArchivo)) {
-            var listaUsuarioTemp = mutableListOf<Usuario>()
+            val listaUsuarioTemp = mutableListOf<Usuario>()
             fich.leerArchivo(rutaArchivo).forEach { usuario ->
-                TODO()
+                listaUsuarioTemp.plus(usuario)
             }
         }
         TODO()

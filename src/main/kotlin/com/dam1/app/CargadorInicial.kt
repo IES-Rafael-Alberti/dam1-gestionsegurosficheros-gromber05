@@ -2,7 +2,10 @@ package com.dam1.app
 
 import com.dam1.data.IRepoSeguros
 import com.dam1.data.IRepoUsuarios
+import com.dam1.model.Seguro
+import com.dam1.ui.Errores
 import com.dam1.ui.IEntradaSalida
+import com.dam1.utils.IUtilFicheros
 
 /**
  * Clase encargada de cargar los datos iniciales de usuarios y seguros desde ficheros,
@@ -15,8 +18,7 @@ import com.dam1.ui.IEntradaSalida
 class CargadorInicial(
     private val ui: IEntradaSalida,
     private val repoUsuarios: IRepoUsuarios,
-    private val repoSeguros: IRepoSeguros
-)
+    private val repoSeguros: IRepoSeguros, )
 {
 
     /**
@@ -24,7 +26,7 @@ class CargadorInicial(
      * Muestra errores si ocurre un problema en la lectura o conversión de datos.
      */
     fun cargarUsuarios() {
-        TODO("Implementar este método")
+        repoUsuarios.obtenerTodos()
     }
 
     /**
@@ -34,7 +36,19 @@ class CargadorInicial(
      * Muestra errores si ocurre un problema en la lectura o conversión de datos.
      */
     fun cargarSeguros() {
-        TODO("Implementar este método")
+        val segurosDatos = repoSeguros.obtenerTodos()
+
+        try {
+            val seguros = segurosDatos.mapNotNull { dato ->
+                val tipo = dato.tipoSeguro()
+                val creadorSeguros = ConfiguracionesApp.mapaCrearSeguros[tipo]
+
+                if (creadorSeguros != null) creadorSeguros(dato) else throw Exception()
+
+            }
+        } catch (e: Exception) {
+            ui.mostrarMsj(Errores.fileError.descripcion)
+        }
     }
 
 }

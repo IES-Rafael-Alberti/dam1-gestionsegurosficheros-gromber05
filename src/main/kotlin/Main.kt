@@ -2,7 +2,7 @@ import com.dam1.app.CargadorInicial
 import com.dam1.app.ControlAcceso
 import com.dam1.app.GestorMenu
 import com.dam1.data.*
-import com.dam1.model.Seguro
+import com.dam1.model.Perfil
 import com.dam1.service.GestorSeguros
 import com.dam1.service.GestorUsuarios
 import com.dam1.ui.Consola
@@ -13,8 +13,8 @@ fun main() {
 
     // Crear dos variables con las rutas de los archivos de texto donde se almacenan los usuarios y seguros.
     // Estos ficheros se usarán solo si el programa se ejecuta en modo de almacenamiento persistente.
-    val rutaArchivoSeguros = ""
-    val rutaArchivoUsuarios = ""
+    val rutaArchivoSeguros = "/bd/seguros.txt"
+    val rutaArchivoUsuarios = "/bd/usuarios.txt"
 
     // Instanciamos los componentes base del sistema: la interfaz de usuario, el gestor de ficheros y el módulo de seguridad.
     // Estos objetos serán inyectados en los diferentes servicios y utilidades a lo largo del programa.
@@ -62,23 +62,21 @@ fun main() {
     val gestorSeguros = GestorSeguros(repoSeguros)
     val gestorUsuarios = GestorUsuarios(moduloSeguridad, repoUsuarios)
 
+    var usuario: Pair<String, Perfil?>?
     // Se inicia el proceso de autenticación. Se comprueba si hay usuarios en el sistema y se pide login.
     // Si no hay usuarios, se permite crear un usuario ADMIN inicial.
 
-    cargadorInicial.cargarUsuarios()
+    var nombreUsuario: String = ""
 
-    var loginExitoso = false
+    val login = ControlAcceso(rutaArchivoUsuarios, gestorUsuarios,interfazUsuario, gestorFicheros)
+    if (login.autenticar() == null) return else usuario = login.autenticar()
 
-    if (gestorUsuarios.buscarUsuario("ADMIN") == null) {
-        interfazUsuario.mostrarMsj("LOGIN")
-
-    } else {
-        interfazUsuario.mostrarMsj("No existe el usuario ADMIN, ¿desea crear uno?")
-    }
+    if (usuario.first != null) nombreUsuario = usuario?.first ?: ""
 
     // Si el login fue exitoso (no es null), se inicia el menú correspondiente al perfil del usuario autenticado.
     // Se lanza el menú principal, **iniciarMenu(0)**, pasándole toda la información necesaria.
 
-
+    val gestorMenu = GestorMenu(nombreUsuario , usuario.perfil, interfazUsuario, gestorUsuarios, gestorSeguros)
+    gestorMenu.iniciarMenu()
 
 }

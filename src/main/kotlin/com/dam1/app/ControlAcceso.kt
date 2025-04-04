@@ -43,10 +43,15 @@ class ControlAcceso(private val rutaArchivos: String,
      *
      * @return Un par (nombreUsuario, perfil) si el acceso fue exitoso, o `null` si el usuario cancela el acceso.
      */
-    fun autenticar(): Pair<String, Perfil>? {
-        if (!ficheros.existeFichero(rutaArchivos)) {
-            return null
-        } else return iniciarSesion()
+    fun autenticar(): Pair<String, Perfil?>? {
+
+        var inicioSesion: Pair<String, Perfil?>? = null
+
+        if (verificarFicheroUsuarios()) {
+            inicioSesion = iniciarSesion()
+        }
+
+        return inicioSesion
     }
 
     /**
@@ -60,8 +65,35 @@ class ControlAcceso(private val rutaArchivos: String,
      * @return `true` si el proceso puede continuar (hay al menos un usuario),
      *         `false` si el usuario cancela la creación inicial o ocurre un error.
      */
-    private fun verificarFicheroUsuarios() {
-        TODO("Implementar este método")
+    private fun verificarFicheroUsuarios(): Boolean {
+        val falso: Boolean
+
+        return try {
+            if (!ficheros.existeFichero(rutaArchivos)) {
+                ui.mostrarMsj("La base de datos no existe, creando una nueva...")
+                ficheros.escribirArchivo(rutaArchivos, emptyList())
+
+                val opcion = ui.preguntar("No se ha encontrado ningún usuario, ¿desea crear un usuario admin? (s/n) »» ")
+
+                if (opcion) {
+                    var nombreUsuario = ""
+                    var contrasenia = ""
+
+                    while (nombreUsuario.isEmpty() || contrasenia.isEmpty()) {
+                        nombreUsuario = ui.pedirInfo("Introduzca su nombre de usuario »» ")
+                        contrasenia = ui.pedirInfoOculta("Introduzca su contraseña »» ")
+                    }
+
+                    falso = gestorUsuarios.agregarUsuario(nombreUsuario, contrasenia, Perfil.ADMIN)
+
+                } else falso = false
+
+                falso
+            } else if (ficheros.existeFichero(rutaArchivos) && ficheros.leerArchivo(rutaArchivos).isNotEmpty()) true else false
+        } catch (e: Exception) {
+            ui.mostrarError(Errores.fileError.descripcion)
+            false
+        }
     }
 
     /**
@@ -73,37 +105,15 @@ class ControlAcceso(private val rutaArchivos: String,
      * @return Un par (nombreUsuario, perfil) si las credenciales son correctas,
      *         o `null` si el usuario decide no continuar.
      */
-    private fun iniciarSesion(): Pair<String, Perfil>? {
+    private fun iniciarSesion(): Pair<String, Perfil?>? {
         var nombreUsuario = ""
         var contrasenia = ""
-        var usuarioEncontrado: Usuario? = null
-        var verificado = false
 
-        do {
-            try {
-                nombreUsuario = ui.pedirInfo("Introduzca el nombre de usuario »» ")
-                contrasenia = ui.pedirInfoOculta("Introduzca su contraseña »» ")
+        while (nombreUsuario.isEmpty() || contrasenia.isEmpty()) {
+            nombreUsuario = ui.pedirInfo("Introduzca su nombre de usuario »» ")
+            contrasenia = ui.pedirInfoOculta("Introduzca su contraseña »» ")
+        }
 
-                require(nombreUsuario.isNotEmpty()) { Errores.datosEquivocado.descripcion }
-                require(contrasenia.isNotEmpty()) { Errores.datosEquivocado.descripcion }
-
-                usuarioEncontrado = gestorUsuarios.buscarUsuario(nombreUsuario)
-
-                if (usuarioEncontrado != null) {
-                    if (gestorUsuarios.iniciarSesion(nombreUsuario, contrasenia) != null) {
-                        verificado = true
-                    }
-                }
-
-            } catch (ie: IllegalArgumentException) {
-                ui.mostrarError(Errores.usuarioNoEncontrado.descripcion)
-            } catch (e: Exception) {
-                ui.mostrarError(e.message)
-            }
-        } while(nombreUsuario.isEmpty() && contrasenia.isEmpty())
-
-        if (usuarioEncontrado != null && contrasenia.isNotEmpty() && verificado) {
-            return Pair(usuarioEncontrado.nombre, usuarioEncontrado.perfil)
-        } else return null
+        return if (gestorUsuarios.iniciarSesion(nombreUsuario, contrasenia) == null) null else Pair(nombreUsuario, gestorUsuarios.iniciarSesion(nombreUsuario, contrasenia))
     }
 }
