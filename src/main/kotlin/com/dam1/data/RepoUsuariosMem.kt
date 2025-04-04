@@ -9,7 +9,7 @@ open class RepoUsuariosMem : IRepoUsuarios {
 
     override fun agregar(usuario: Usuario): Boolean {
         if (buscar(usuario.nombre) == null) {
-            usuarios.plus(usuario)
+            usuarios.add(usuario)
             return true
         } else return false
     }

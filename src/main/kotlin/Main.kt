@@ -78,7 +78,7 @@ fun main() {
     // Se lanza el menú principal, **iniciarMenu(0)**, pasándole toda la información necesaria.
 
     if (nombre != null && perfil != null) {
-        val gestorMenu = GestorMenu(nombre, perfil.toString(), interfazUsuario, gestorUsuarios, gestorSeguros)
+        val gestorMenu = GestorMenu(nombre, perfil.toString().lowercase(), interfazUsuario, gestorUsuarios, gestorSeguros)
         gestorMenu.iniciarMenu(perfil.indiceMenu)
     }
 
